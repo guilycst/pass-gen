@@ -1,0 +1,47 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22.1'
+
+    - name: Build linux amd64
+      run: GOOS=linux GOARCH=amd64 go build -o amd64/linux/passgen cmd/cli/
+    
+    - name: Build linux arm64
+      run: GOOS=linux GOARCH=arm64 go build -o arm64/linux/passgen cmd/cli/
+
+    - name: Build linux 386
+      run: GOOS=linux GOARCH=386 go build -o 386/linux/passgen cmd/cli/
+
+    - name: Build windows amd64
+      run: GOOS=windows GOARCH=amd64 go build -o amd64/win/passgen.exe cmd/cli/
+
+    - name: Build windows arm64
+      run: GOOS=windows GOARCH=arm64 go build -o arm64/win/passgen.exe cmd/cli/
+
+    - name: Build windows 386
+      run: GOOS=windows GOARCH=arm64 go build -o 386/win/passgen.exe cmd/cli/
+
+    - name: Build macos arm64
+      run: GOOS=darwin GOARCH=amd64 go build -o amd64/darwin/passgen cmd/cli/
+
+    - name: Build macos apple silicon
+      run: GOOS=darwin GOARCH=amd64 go build -o arm64/darwin/passgen cmd/cli/
+      

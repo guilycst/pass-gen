@@ -1,0 +1,100 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22.1'
+
+    - name: Build linux amd64
+      run: GOOS=linux GOARCH=amd64 go build -o ./passgen-amd64-linux ./cmd/cli/
+    
+    - name: Build linux arm64
+      run: GOOS=linux GOARCH=arm64 go build -o ./passgen-arm64-linux ./cmd/cli/
+
+    - name: Build linux 386
+      run: GOOS=linux GOARCH=386 go build -o ./passgen-386-linux ./cmd/cli/
+
+    - name: Build windows amd64
+      run: GOOS=windows GOARCH=amd64 go build -o ./passgen-amd64-win.exe ./cmd/cli/
+
+    - name: Build windows arm64
+      run: GOOS=windows GOARCH=arm64 go build -o ./passgen-arm64-win.exe ./cmd/cli/
+
+    - name: Build windows 386
+      run: GOOS=windows GOARCH=arm64 go build -o ./passgen-386-win.exe ./cmd/cli/
+
+    - name: Build macos arm64
+      run: GOOS=darwin GOARCH=amd64 go build -o ./passgen-amd64-darwin ./cmd/cli/
+
+    - name: Build macos apple silicon
+      run: GOOS=darwin GOARCH=amd64 go build -o ./passgen-arm64-darwin ./cmd/cli/
+    
+    - name: Create a Release
+      id: create_release
+      uses: shogo82148/actions-create-release@v1
+
+    - name: Upload Assets
+      uses: shogo82148/actions-upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./passgen-amd64-linux
+
+    - name: Upload Assets
+      uses: shogo82148/actions-upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./passgen-arm64-linux
+
+    - name: Upload Assets
+      uses: shogo82148/actions-upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./passgen-386-linux
+
+    - name: Upload Assets
+      uses: shogo82148/actions-upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./passgen-amd64-win.exe
+
+    - name: Upload Assets
+      uses: shogo82148/actions-upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./passgen-arm64-win.exe
+
+    - name: Upload Assets
+      uses: shogo82148/actions-upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./passgen-386-win.exe
+
+    - name: Upload Assets
+      uses: shogo82148/actions-upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./passgen-amd64-darwin
+
+    - name: Upload Assets
+      uses: shogo82148/actions-upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./passgen-arm64-darwin
+          
+      
+      

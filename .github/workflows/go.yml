@@ -44,4 +44,13 @@ jobs:
 
     - name: Build macos apple silicon
       run: GOOS=darwin GOARCH=amd64 go build -o ./arm64/darwin/passgen ./cmd/cli/
+    
+    - name: Upload executables
+      uses: actions/upload-artifact@v4
+      with:
+        name: passgen
+        path: |
+          ./amd64/linux/
+          
+      
       

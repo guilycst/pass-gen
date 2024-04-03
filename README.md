@@ -7,7 +7,7 @@ This is a simple command-line interface (CLI) application written in Go for gene
 To use this password generator, you need to have Go >= 1.22.1 installed on your system. You can then install the generator by running:
 
 ```bash
-go install github.com/guilycst/pass-gen/cmd/passgen
+go install github.com/guilycst/pass-gen/cmd/passgen@latest
 ```
 
 ## Usage
